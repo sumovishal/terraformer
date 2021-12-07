@@ -55,7 +55,8 @@ func (SumologicProvider) GetResourceConnections() map[string]map[string][]string
 // GetSupportedService return map of support service for Sumologic
 func (p *SumologicProvider) GetSupportedService() map[string]terraformutils.ServiceGenerator {
 	return map[string]terraformutils.ServiceGenerator{
-		"user": &UserGenerator{},
+		"user":    &UserGenerator{},
+		"monitor": &MonitorGenerator{},
 	}
 }
 
