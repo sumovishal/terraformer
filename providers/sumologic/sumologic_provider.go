@@ -2,14 +2,16 @@ package sumologic
 
 import (
 	"errors"
-	"github.com/GoogleCloudPlatform/terraformer/terraformutils"
 	"os"
+
+	"github.com/GoogleCloudPlatform/terraformer/terraformutils"
 )
 
 type SumologicProvider struct { //nolint
 	terraformutils.Provider
 	AccessKey string
 	AccessID  string
+	BaseUrl   string
 }
 
 func (p *SumologicProvider) Init(args []string) error {
@@ -25,6 +27,12 @@ func (p *SumologicProvider) Init(args []string) error {
 		return errors.New("set SUMOLOGIC_ACCESSID env var")
 	}
 	p.AccessID = accessID
+
+	baseUrl := os.Getenv("SUMOLOGIC_BASE_URL")
+	if baseUrl == "" {
+		return errors.New("set SUMOLOGIC_BASE_URL env var")
+	}
+	p.BaseUrl = baseUrl
 
 	return nil
 }
@@ -64,6 +72,7 @@ func (p *SumologicProvider) InitService(serviceName string, verbose bool) error 
 	p.Service.SetArgs(map[string]interface{}{
 		"AccessKey": p.AccessKey,
 		"AccessID":  p.AccessID,
+		"BaseUrl":   p.BaseUrl,
 	})
 
 	return nil

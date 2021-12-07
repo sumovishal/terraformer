@@ -3,8 +3,9 @@ package sumologic
 import (
 	"context"
 	"fmt"
-	"github.com/GoogleCloudPlatform/terraformer/terraformutils"
 	"os"
+
+	"github.com/GoogleCloudPlatform/terraformer/terraformutils"
 
 	sumologic "github.com/saurabh-agarwals/sumologic-api-client-go/openapi"
 )
