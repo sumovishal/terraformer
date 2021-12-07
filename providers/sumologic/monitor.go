@@ -51,7 +51,8 @@ func (g *MonitorGenerator) InitResources() error {
 	}
 	rootFolderChildren := resp.GetChildren()
 	for _, child := range rootFolderChildren {
-		if child.GetType() == "MonitorsLibraryMonitor" {
+		fmt.Println(child)
+		if child.GetContentType() == "Monitor" {
 			monitors = append(monitors, child)
 		}
 	}
