@@ -28,9 +28,7 @@ func (g *UserGenerator) createResource(userID string) terraformutils.Resource {
 		fmt.Sprintf("user_%s", userID),
 		"sumologic_user",
 		"sumologic",
-		[]string{
-			fmt.Sprintf("first_name = %s", "gahana"),
-		},
+		[]string{},
 	)
 }
 

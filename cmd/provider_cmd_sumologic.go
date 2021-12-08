@@ -15,7 +15,6 @@ package cmd
 
 import (
 	"errors"
-	"fmt"
 	sumologic_terraforming "github.com/GoogleCloudPlatform/terraformer/providers/sumologic"
 	"github.com/GoogleCloudPlatform/terraformer/terraformutils"
 	"github.com/spf13/cobra"
@@ -29,17 +28,14 @@ func newCmdSumologicImporter(options ImportOptions) *cobra.Command {
 		Long:  "Import current state to Terraform configuration from Sumo Logic",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			accessKey := os.Getenv("SUMOLOGIC_ACCESSKEY")
-			fmt.Println(accessKey)
 			if len(accessKey) == 0 {
 				return errors.New("Must set SUMOLOGIC_ACCESSKEY env var")
 			}
 			accessID := os.Getenv("SUMOLOGIC_ACCESSID")
-			fmt.Println(accessID)
 			if len(accessID) == 0 {
 				return errors.New("Must set SUMOLOGIC_ACCESSID env var")
 			}
 			provider := newSumologicProvider()
-			fmt.Println("provider=", provider)
 			err := Import(provider, options, []string{accessKey, accessID})
 			if err != nil {
 				return err
@@ -50,7 +46,6 @@ func newCmdSumologicImporter(options ImportOptions) *cobra.Command {
 
 	cmd.AddCommand(listCmd(newSumologicProvider()))
 	baseProviderFlags(cmd.PersistentFlags(), &options, "users", "users=id1:id2:id4")
-	fmt.Println("in newCmdSumologicImporter()")
 	return cmd
 }
 
