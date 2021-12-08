@@ -43,7 +43,6 @@ func (g *UserGenerator) InitResources() error {
 	})
 
 	resp, _, err := sumologicClient.UserManagementApi.ListUsers(auth).Execute()
-	fmt.Println(resp)
 	if err != nil {
 		return err
 	}
