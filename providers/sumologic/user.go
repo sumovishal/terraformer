@@ -3,9 +3,10 @@ package sumologic
 import (
 	"context"
 	"fmt"
-	"os"
-
 	"github.com/GoogleCloudPlatform/terraformer/terraformutils"
+	"log"
+	"os"
+	"strings"
 
 	sumologic "github.com/saurabh-agarwals/sumologic-api-client-go/openapi"
 )
@@ -36,12 +37,18 @@ func (g *UserGenerator) createResource(userID string) terraformutils.Resource {
 func (g *UserGenerator) InitResources() error {
 	var users []sumologic.UserModel
 	cf := sumologic.NewConfiguration()
+	cf.Servers = sumologic.ServerConfigurations{
+		sumologic.ServerConfiguration{
+			URL:         strings.TrimSuffix(os.Getenv("SUMOLOGIC_BASE_URL"), "/"),
+			Description: fmt.Sprintf("%s deployment API server", os.Getenv("SUMOLOGIC_BASE_URL")),
+		},
+	}
 	sumologicClient := sumologic.NewAPIClient(cf)
 	auth := context.WithValue(context.Background(), sumologic.ContextBasicAuth, sumologic.BasicAuth{
 		UserName: os.Getenv("SUMOLOGIC_ACCESSID"),
 		Password: os.Getenv("SUMOLOGIC_ACCESSKEY"),
 	})
-
+	log.Printf("%s deployment API server", os.Getenv("SUMOLOGIC_BASE_URL"))
 	resp, _, err := sumologicClient.UserManagementApi.ListUsers(auth).Execute()
 	if err != nil {
 		return err
